@@ -19,9 +19,9 @@ def main():
 
     wheel = cv2.resize(cv2.imread('data/wheel.png', -1), (265, 265))
 
-    forward_gear = cv2.resize(cv2.imread('data/gear-rod/forward-svg.png', -1), (60, 300))
-    normal_gear = cv2.resize(cv2.imread('data/gear-rod/normal-svg.png', -1), (60, 300))
-    backward_gear = cv2.resize(cv2.imread('data/gear-rod/backward-svg.png', -1), (60, 300))
+    forward_gear = cv2.resize(cv2.imread('data/gear-rod/forward.png', -1), (60, 300))
+    normal_gear = cv2.resize(cv2.imread('data/gear-rod/normal.png', -1), (60, 300))
+    reverse_gear = cv2.resize(cv2.imread('data/gear-rod/reverse.png', -1), (60, 300))
 
     current_gear = forward_gear
     
@@ -89,7 +89,7 @@ def main():
                     print('NORMAL', end='\r')
 
                 else:
-                    current_gear = backward_gear
+                    current_gear = reverse_gear
                     print('REVERSE', end='\r')
 
         else:
