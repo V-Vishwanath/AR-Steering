@@ -38,6 +38,11 @@ def locate_hands(predictions, size):
     return num_det, boxes[:num_det]
 
 
-def overlay(bg, fg):
-    alpha = (fg[:, :, 3] / 255)[:, :, newaxis, ...]
-    bg[120:370, 220:470, :] = alpha * fg[:, :, :3] + (1 - alpha) * bg[120:370, 220:470, :]
+def overlay(frame, wheel, gear):
+    wheel_alpha = (wheel[:, :, 3] / 255)[:, :, newaxis, ...]
+    gear_alpha = (gear[:, :, 3] / 255)[:, :, newaxis, ...]
+
+    frame[108:373, 188:453, :] = wheel_alpha * wheel[:, :, :3] + (1 - wheel_alpha) * frame[108:373, 188:453, :]
+    frame[100:400, 30:90, :] = gear_alpha * gear[:, :, :3] + (1 - gear_alpha) * frame[100:400, 30:90, :]
+
+

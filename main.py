@@ -17,7 +17,13 @@ def main():
     model, time_taken = load_hand_model()
     print(f'[INFO] Loaded model in {time_taken:.2f}s')
 
-    wheel = cv2.resize(cv2.imread('data/wheel.png', -1), (250, 250))
+    wheel = cv2.resize(cv2.imread('data/wheel.png', -1), (265, 265))
+
+    forward_gear = cv2.resize(cv2.imread('data/gear-rod/forward-svg.png', -1), (60, 300))
+    normal_gear = cv2.resize(cv2.imread('data/gear-rod/normal-svg.png', -1), (60, 300))
+    backward_gear = cv2.resize(cv2.imread('data/gear-rod/backward-svg.png', -1), (60, 300))
+
+    current_gear = forward_gear
     
     src = WebcamVideoStream().start()
     trackers = None
@@ -70,15 +76,31 @@ def main():
             right, left = (0, 1) if centroids[0][0] > centroids[1][0] else (1, 0)
             angle = int((centroids[left][1] - centroids[right][1]) / 4)
 
+            left = centroids[left]
+            right = centroids[right]
+
+            if 20 <= left[0] <= 100:
+                if left[1] <= 130:
+                    current_gear = forward_gear
+                    print('FORWARD', end='\r')
+
+                elif 140 <= left[1] <= 340:
+                    current_gear = normal_gear
+                    print('NORMAL', end='\r')
+
+                else:
+                    current_gear = backward_gear
+                    print('REVERSE', end='\r')
+
         else:
             angle = 0
 
-        overlay(frame, rotate(wheel, angle))
+        overlay(frame, rotate(wheel, angle), current_gear)
         
         cv2.imshow('Frame', frame)
         if cv2.waitKey(1) == 27: break
 
-        print(f'[INFO] FPS : {1 / (time() - start):.2f}', end='\r')
+        # print(f'[INFO] FPS : {1 / (time() - start):.2f}', end='\r')
         
 
     src.stop()
